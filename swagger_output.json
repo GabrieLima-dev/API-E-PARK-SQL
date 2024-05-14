@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "E-Park Mobile",
+    "description": "O E-Park é um aplicativo desenvolvido para facilitar a reserva e marcação de vagas em estacionamentos privativos. Os usuários podem encontrar vagas disponíveis, realizar o cadastro de seus veículos, efetuar o pagamento através de cartão, e receber o ticket de confirmação da reserva através do aplicativo onde a aplicação está diretamente relacionada com o gerenciador de sistema E-park web."
   },
   "host": "localhost:3000",
   "basePath": "/",
