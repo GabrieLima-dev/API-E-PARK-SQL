@@ -6,7 +6,7 @@ require("./models");
 
 const port = 3000;
 
-require("./controllers/usuario")(app);
+require("./controllers/Usuario")(app);
 
 app.use(express.json());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
