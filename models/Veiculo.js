@@ -16,17 +16,17 @@ module.exports = (sequelize, DataTypes) => {
   }
   Veiculo.init(
     {
-      ID: { type: DataTypes.INTEGER, primaryKey: true },
+      ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       UsuarioID: {
         type: DataTypes.INTEGER,
-        references: { model: Usuario, key: "ID" },
+        references: { model: sequelize.models.Usuario, key: "ID" },
       },
       Marca: DataTypes.STRING,
       Modelo: DataTypes.STRING,
       Ano: DataTypes.INTEGER,
       Placa: DataTypes.STRING,
     },
-    { sequelize, modelName: "veiculo" }
+    { sequelize, modelName: "Veiculo", tableName: "veiculos" }
   );
   return Veiculo;
 };

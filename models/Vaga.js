@@ -13,11 +13,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Vaga.init(
     {
-      ID: { type: DataTypes.INTEGER, primaryKey: true },
+      ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       Tipo: DataTypes.STRING,
-      Ocupada: DataTypes.BOOLEAN,
+      Ocupada: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
-    { sequelize, modelName: "vaga", tableName: "vagas" }
+    { sequelize, modelName: "Vaga", tableName: "vagas" }
   );
   return Vaga;
 };

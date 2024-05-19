@@ -21,24 +21,24 @@ module.exports = (sequelize, DataTypes) => {
   }
   Reserva.init(
     {
-      ID: { type: DataTypes.INTEGER, primaryKey: true },
+      ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       UsuarioID: {
         type: DataTypes.INTEGER,
-        references: { model: Usuario, key: "ID" },
+        references: { model: sequelize.models.Usuario, key: "ID" },
       },
       VeiculoID: {
         type: DataTypes.INTEGER,
-        references: { model: Veiculo, key: "ID" },
+        references: { model: sequelize.models.Veiculo, key: "ID" },
       },
       VagaID: {
         type: DataTypes.INTEGER,
-        references: { model: Vaga, key: "ID" },
+        references: { model: sequelize.models.Vaga, key: "ID" },
       },
       HorarioEntrada: DataTypes.TIME,
       HorarioSaida: DataTypes.TIME,
       DataReserva: DataTypes.DATE,
     },
-    { sequelize, modelName: "reserva", tableName: "reservas" }
+    { sequelize, modelName: "Reserva", tableName: "reservas" }
   );
   return Reserva;
 };

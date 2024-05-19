@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       ID: { type: DataTypes.INTEGER, primaryKey: true },
       ReservaID: {
         type: DataTypes.INTEGER,
-        references: { model: Reserva, key: "ID" },
+        references: { model: sequelize.models.Reserva, key: "ID" },
       },
       QRCode: DataTypes.BLOB,
     },
