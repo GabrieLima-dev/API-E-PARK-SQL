@@ -3,9 +3,11 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger_output.json");
 const { sequelize } = require("./models");
 const bodyParser = require('body-parser');
+var cors = require('cors')
 
 const app = express();
 const port = 3000;
+app.use(cors());
 
 app.use(bodyParser.json());
 

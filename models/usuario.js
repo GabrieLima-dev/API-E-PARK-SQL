@@ -13,15 +13,17 @@ module.exports = (sequelize, DataTypes) => {
   }
   Usuario.init(
     {
-      ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true  },
-      Nome: DataTypes.STRING,
-      Email: DataTypes.STRING,
-      Senha: DataTypes.STRING,
-      Foto: DataTypes.BLOB,
+      id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+      nome: DataTypes.STRING,
+      email: DataTypes.STRING,
+      senha: DataTypes.STRING,
+      foto: DataTypes.BLOB,
     },
     {
       sequelize,
-      modelName: "Usuario", tableName: "usuarios" 
+      modelName: "Usuario",
+      tableName: "usuarios",
+      timestamps: false, // Isso impede que o Sequelize adicione automaticamente as colunas createdAt e updatedAt
     }
   );
   return Usuario;

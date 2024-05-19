@@ -22,9 +22,35 @@
       },
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "senha": {
+                  "example": "any"
+                },
+                "foto": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

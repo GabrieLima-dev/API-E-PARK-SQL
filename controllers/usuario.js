@@ -13,8 +13,22 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const usuario = await Usuario.create(req.body);
-  res.json(usuario);
+  try {
+    // Crie um novo usuário com todas as informações fornecidas no corpo da requisição
+    const usuario = await Usuario.create({
+      nome: req.body.nome,
+      email: req.body.email,
+      senha: req.body.senha,
+      foto: req.body.foto
+    });
+
+    // Retorne o novo usuário criado como resposta
+    res.status(201).json(usuario);
+  } catch (error) {
+    // Se ocorrer um erro ao criar o usuário, retorne uma mensagem de erro
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao criar usuário' });
+  }
 });
 
 router.put("/:id", async (req, res) => {
