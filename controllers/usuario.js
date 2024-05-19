@@ -36,9 +36,20 @@ router.put("/:id", async (req, res) => {
   res.json({ success: "Usuario updated" });
 });
 
+
+
 router.delete("/:id", async (req, res) => {
-  await Usuario.destroy({ where: { ID: req.params.id } });
-  res.json({ success: "Usuario deleted" });
+  try {
+    // Exclua o usuário com o ID fornecido
+    await Usuario.destroy({ where: { id: req.params.id } });
+
+    // Se a exclusão for bem-sucedida, retorne uma resposta de sucesso
+    res.json({ success: "Usuario deleted" });
+  } catch (error) {
+    // Se ocorrer um erro durante a exclusão, retorne uma mensagem de erro
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao excluir usuário' });
+  }
 });
 
 module.exports = (app) => app.use("/Usuario", router);
