@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Usuario } = require('../models');
+const { Usuario } = require("../models");
 
 router.get("/", async (req, res) => {
   const usuario = await Usuario.findAll();
@@ -21,13 +21,11 @@ router.post("/", async (req, res) => {
       senha: req.body.senha,
       foto: req.body.foto
     });
-
-    // Retorne o novo usuário criado como resposta
     res.status(201).json(usuario);
   } catch (error) {
     // Se ocorrer um erro ao criar o usuário, retorne uma mensagem de erro
     console.error(error);
-    res.status(500).json({ error: 'Erro ao criar usuário' });
+    res.status(500).json({ error: "Erro ao criar usuário" });
   }
 });
 
@@ -35,9 +33,6 @@ router.put("/:id", async (req, res) => {
   await Usuario.update(req.body, { where: { ID: req.params.id } });
   res.json({ success: "Usuario updated" });
 });
-
-
-
 router.delete("/:id", async (req, res) => {
   try {
     // Exclua o usuário com o ID fornecido
@@ -48,7 +43,7 @@ router.delete("/:id", async (req, res) => {
   } catch (error) {
     // Se ocorrer um erro durante a exclusão, retorne uma mensagem de erro
     console.error(error);
-    res.status(500).json({ error: 'Erro ao excluir usuário' });
+    res.status(500).json({ error: "Erro ao excluir usuário" });
   }
 });
 
