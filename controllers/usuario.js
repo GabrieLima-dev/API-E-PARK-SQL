@@ -1,12 +1,30 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../models");
+const { Usuario } = require('../models');
 
-const Listar = async (req, res) => {
-  const lista = await db.usuario.findAll();
-  return res.json(lista);
-};
+router.get("/", async (req, res) => {
+  const usuario = await Usuario.findAll();
+  res.json(usuario);
+});
 
-router.get("/listar", Listar);
+router.get("/:id", async (req, res) => {
+  const usuario = await Usuario.findByPk(req.params.id);
+  res.json(usuario);
+});
 
-module.exports = (app) => app.use("/usuario", router);
+router.post("/", async (req, res) => {
+  const usuario = await Usuario.create(req.body);
+  res.json(usuario);
+});
+
+router.put("/:id", async (req, res) => {
+  await Usuario.update(req.body, { where: { ID: req.params.id } });
+  res.json({ success: "Usuario updated" });
+});
+
+router.delete("/:id", async (req, res) => {
+  await Usuario.destroy({ where: { ID: req.params.id } });
+  res.json({ success: "Usuario deleted" });
+});
+
+module.exports = (app) => app.use("/Usuario", router);
