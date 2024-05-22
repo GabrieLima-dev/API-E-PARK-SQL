@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Vaga } = require('../models');
+const { sequelize, Vaga } = require('../models');
 
 // const Listar = async (req, res) => {
 //   const lista = await db.usuario.findAll();

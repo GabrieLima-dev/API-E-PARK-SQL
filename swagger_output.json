@@ -126,6 +126,32 @@
       "post": {
         "description": "",
         "tags": ["Veiculo"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "usuarioid": {
+                  "example": ""
+                },
+                "marca": {
+                  "example": ""
+                },
+                "modelo": {
+                  "example": ""
+                },
+                "ano": {
+                  "example": ""
+                },
+                "placa": {
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
