@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { sequelize, Veiculo } = require('../models');
+const { sequelize, Veiculo, Usuario } = require('../models');
 
 // Get all veiculos
 router.get("/", async (req, res) => {
@@ -31,15 +31,28 @@ router.get("/:id", async (req, res) => {
 
 // Create new veiculo
 router.post('/', async (req, res) => {
-  const { UsuarioID, Marca, Modelo, Ano, Placa } = req.body;
-
-  if (!UsuarioID || !Marca || !Modelo || !Ano || !Placa) {
-    return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
-  }
-
   try {
-    const veiculo = await Veiculo.create({ UsuarioID, Marca, Modelo, Ano, Placa });
-    res.status(201).json(veiculo);
+    const { usuarioid, modelo, marca, ano, placa } = req.body;
+
+    if (!usuarioid) {
+      return res.status(400).json({ error: 'usuarioid é obrigatório' });
+    }
+
+    // Verifica se o usuarioid existe no banco de dados
+    const usuario = await Usuario.findByPk(usuarioid);
+    if (!usuario) {
+      return res.status(404).json({ error: 'usuarioid não encontrado' });
+    }
+
+    const novoVeiculo = await Veiculo.create({
+      usuarioid,
+      modelo,
+      marca,
+      ano,
+      placa
+    });
+
+    res.status(201).json(novoVeiculo);
   } catch (error) {
     console.error('Erro ao criar veículo:', error);
     res.status(500).json({ error: 'Erro ao criar veículo' });
@@ -49,9 +62,9 @@ router.post('/', async (req, res) => {
 // Update veiculo
 router.put('/:id', async (req, res) => {
   try {
-    const { UsuarioID, Marca, Modelo, Ano, Placa } = req.body;
+    const { usuarioid, Marca, Modelo, Ano, Placa } = req.body;
     const [updated] = await Veiculo.update(
-      { UsuarioID, Marca, Modelo, Ano, Placa },
+      { usuarioid, Marca, Modelo, Ano, Placa },
       { where: { id: req.params.id } }
     );
 
