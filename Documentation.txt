@@ -12,3 +12,58 @@ Criação da API
 
 
 npm run swagger-autogen    -> Gera a Documentação do Swagger.
+
+
+
+Banco em PostgreSql
+
+CREATE TABLE Usuarios (
+    ID SERIAL PRIMARY KEY,
+    Nome VARCHAR(100),
+    Email VARCHAR(100),
+    Senha VARCHAR(100),
+    Foto BYTEA
+);
+
+CREATE TABLE Veiculos (
+    ID SERIAL PRIMARY KEY,
+    UsuarioID INT,
+    Marca VARCHAR(50),
+    Modelo VARCHAR(50),
+    Ano INT,
+    Placa VARCHAR(7),
+    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(ID)
+);
+
+CREATE TABLE Vagas (
+    ID SERIAL PRIMARY KEY,
+    Tipo VARCHAR(20),
+    Ocupada BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE Reservas (
+    ID SERIAL PRIMARY KEY,
+    UsuarioID INT,
+    VeiculoID INT,
+    VagaID INT,
+    HorarioEntrada TIME,
+    HorarioSaida TIME,
+    DataReserva DATE,
+    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(ID),
+    FOREIGN KEY (VeiculoID) REFERENCES Veiculos(ID),
+    FOREIGN KEY (VagaID) REFERENCES Vagas(ID)
+);
+
+CREATE TABLE Tickets (
+    ID SERIAL PRIMARY KEY,
+    ReservaID INT,
+    QRCode BYTEA,
+    FOREIGN KEY (ReservaID) REFERENCES Reservas(ID)
+);
+
+
+Usuarios: Esta tabela tem um relacionamento um-para-muitos com as tabelas Veiculos, Reservas e Tickets através do campo ID.
+Veiculos: Esta tabela tem um relacionamento um-para-muitos com a tabela Reservas através do campo ID. Ela também tem um relacionamento muitos-para-um com a tabela Usuarios através do campo UsuarioID.
+Vagas: Esta tabela tem um relacionamento um-para-muitos com a tabela Reservas através do campo ID.
+Reservas: Esta tabela tem um relacionamento um-para-um com a tabela Tickets através do campo ID. Ela também tem um relacionamento muitos-para-um com as tabelas Usuarios, Veiculos e Vagas através dos campos UsuarioID, VeiculoID e VagaID, respectivamente.
+Tickets: Esta tabela tem um relacionamento um-para-um com a tabela Reservas através do campo ReservaID.

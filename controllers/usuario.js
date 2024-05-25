@@ -8,9 +8,20 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const usuario = await Usuario.findByPk(req.params.id);
-  res.json(usuario);
+  try {
+    const usuario = await Usuario.findByPk(req.params.id);
+
+    if (usuario) {
+      res.json(usuario);
+    } else {
+      res.status(404).json({ error: "Usuario não encontrado" });
+    }
+  } catch (error) {
+    console.error('Erro ao buscar usuário:', error);
+    res.status(500).json({ error: "Erro ao buscar usuário" });
+  }
 });
+
 
 router.post("/", async (req, res) => {
   try {
@@ -30,9 +41,23 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  await Usuario.update(req.body, { where: { ID: req.params.id } });
-  res.json({ success: "Usuario updated" });
+  try {
+    const userId = req.params.id;
+    const updatedUserInfo = req.body; 
+
+    const [updatedRows] = await Usuario.update(updatedUserInfo, { where: { id: userId } });
+
+    if (updatedRows === 1) {
+      res.json({ success: "Usuario updated" });
+    } else {
+      res.status(404).json({ error: "Usuario not found" });
+    }
+  } catch (error) {
+    console.error('Erro ao atualizar usuário:', error);
+    res.status(500).json({ error: "Erro ao atualizar usuário" });
+  }
 });
+
 router.delete("/:id", async (req, res) => {
   try {
     // Exclua o usuário com o ID fornecido

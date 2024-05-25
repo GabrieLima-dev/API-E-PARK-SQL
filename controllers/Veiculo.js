@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { sequelize, Veiculo, Usuario } = require('../models');
 
-// Get all veiculos
 router.get("/", async (req, res) => {
   try {
     const veiculos = await sequelize.query('SELECT * FROM veiculos', {
@@ -15,21 +14,21 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Get veiculo by ID
+
 router.get("/:id", async (req, res) => {
   try {
     const veiculo = await Veiculo.findByPk(req.params.id);
     if (veiculo) {
-      res.json(veiculo);
+      res.status(200).json(veiculo);
     } else {
-      res.status(404).json({ error: "Veiculo not found" });
+      res.status(404).json({ error: "Veiculo não encontrado" });
     }
   } catch (error) {
     res.status(500).json({ error: "Something went wrong!" });
   }
 });
 
-// Create new veiculo
+
 router.post('/', async (req, res) => {
   try {
     const { usuarioid, modelo, marca, ano, placa } = req.body;
@@ -59,38 +58,39 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Update veiculo
-router.put('/:id', async (req, res) => {
-  try {
-    const { usuarioid, Marca, Modelo, Ano, Placa } = req.body;
-    const [updated] = await Veiculo.update(
-      { usuarioid, Marca, Modelo, Ano, Placa },
-      { where: { id: req.params.id } }
-    );
 
-    if (updated) {
-      const updatedVeiculo = await Veiculo.findByPk(req.params.id);
-      res.json(updatedVeiculo);
+router.put("/:id", async (req, res) => {
+  try {
+    const veiculoId = req.params.id;
+    const updatedVeiculoInfo = req.body; 
+
+    const [updatedRows] = await Veiculo.update(updatedVeiculoInfo, { where: { id: veiculoId } });
+
+    if (updatedRows === 1) {
+      res.json({ success: "Veiculo atualizado com sucesso" });
     } else {
-      res.status(404).json({ error: 'Veiculo not found' });
+      res.status(404).json({ error: "Veiculo não encontrado" });
     }
   } catch (error) {
     console.error('Erro ao atualizar veículo:', error);
-    res.status(500).json({ error: 'Erro ao atualizar veículo' });
+    res.status(500).json({ error: "Erro ao atualizar veículo" });
   }
 });
 
-// Delete veiculo
+
 router.delete("/:id", async (req, res) => {
   try {
-    // Exclua o usuário com o ID fornecido
-    await Veiculo.destroy({ where: { id: req.params.id } });
+    const veiculoId = req.params.id;
 
-    // Se a exclusão for bem-sucedida, retorne uma resposta de sucesso
-    res.json({ success: "Veiculo deleted" });
+    const rowsDeleted = await Veiculo.destroy({ where: { id: veiculoId } });
+
+    if (rowsDeleted) {
+      res.json({ success: "Veiculo deleted" });
+    } else {
+      res.status(404).json({ error: "Veiculo not found" });
+    }
   } catch (error) {
-    // Se ocorrer um erro durante a exclusão, retorne uma mensagem de erro
-    console.error(error);
+    console.error('Erro ao excluir veículo:', error);
     res.status(500).json({ error: "Erro ao excluir Veiculo" });
   }
 });

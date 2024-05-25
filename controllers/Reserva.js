@@ -28,8 +28,21 @@ router.put("/:id", async (req, res) => {
 
 // Delete reserva
 router.delete("/:id", async (req, res) => {
-  await Reserva.destroy({ where: { ID: req.params.id } });
-  res.json({ success: "Reserva deleted" });
+  try {
+    const reservaId = req.params.id;
+
+    // Exclua a reserva
+    const rowsDeleted = await Reserva.destroy({ where: { id: reservaId } });
+
+    if (rowsDeleted) {
+      res.json({ success: "Reserva deleted" });
+    } else {
+      res.status(404).json({ error: "Reserva not found" });
+    }
+  } catch (error) {
+    console.error('Erro ao excluir reserva:', error);
+    res.status(500).json({ error: "Erro ao excluir Reserva" });
+  }
 });
 
 module.exports = (app) => app.use("/Reserva", router);

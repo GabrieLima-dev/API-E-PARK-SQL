@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "API E-PARK",
+    "description": "O E-Park é um aplicativo desenvolvido para facilitar a reserva e marcação de vagas em estacionamentos privativos. Os usuários podem encontrar vagas disponíveis, realizar o cadastro de seus veículos, efetuar o pagamento através de cartão, e receber o ticket de confirmação da reserva através do aplicativo onde a aplicação está diretamente relacionada com o gerenciador de sistema E-park web."
   },
   "host": "localhost:3000",
   "basePath": "/",
@@ -32,15 +32,19 @@
               "type": "object",
               "properties": {
                 "nome": {
+                  "type": "string",
                   "example": "any"
                 },
                 "email": {
+                  "type": "string",
                   "example": "any"
                 },
                 "senha": {
+                  "type": "string",
                   "example": "any"
                 },
                 "foto": {
+                  "type": "string",
                   "example": "any"
                 }
               }
@@ -71,12 +75,15 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "usuário encontrado"
+          },
+          "404": {
+            "description": "usuário não encontrado"
           }
         }
       },
       "put": {
-        "description": "",
+        "description": "Atualiza um usuário pelo ID",
         "tags": ["Usuario"],
         "parameters": [
           {
@@ -84,11 +91,41 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "senha": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "foto": {
+                  "type": "string",
+                  "example": "any"
+                }
+              },
+              "required": ["nome", "email", "senha"]
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
           }
         }
       },
@@ -134,18 +171,23 @@
               "type": "object",
               "properties": {
                 "usuarioid": {
+                  "type": "string",
                   "example": ""
                 },
                 "marca": {
+                  "type": "string",
                   "example": ""
                 },
                 "modelo": {
+                  "type": "string",
                   "example": ""
                 },
                 "ano": {
-                  "example": ""
+                  "type": "integer",
+                  "example": 0
                 },
                 "placa": {
+                  "type": "string",
                   "example": ""
                 }
               }
@@ -153,8 +195,14 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "veículo criado"
+          },
+          "400": {
+            "description": "usuarioid é obrigatório"
+          },
+          "404": {
+            "description": "usuarioid não encontrado"
           }
         }
       }
@@ -174,11 +222,17 @@
         "responses": {
           "200": {
             "description": "OK"
+          }, 
+          "500": {
+            "description": "Something went wrong!"
+          },
+          "404": {
+            "description": "Veiculo não encontrado"
           }
         }
       },
       "put": {
-        "description": "",
+        "description": "Atualiza um veículo pelo ID",
         "tags": ["Veiculo"],
         "parameters": [
           {
@@ -186,11 +240,47 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "usuarioid": {
+                  "type": "string"
+                },
+                "marca": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "modelo": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "ano": {
+                  "type": "integer",
+                  "example": "any"
+                },
+                "placa": {
+                  "type": "string",
+                  "example": "any"
+                }
+              },
+              "required": ["usuarioid", "marca", "modelo", "ano", "placa"]
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Veículo atualizado com sucesso"
+          },
+          "404": {
+            "description": "Veículo não encontrado"
+          },
+          "500": {
+            "description": "Erro ao atualizar veículo"
           }
         }
       },
@@ -281,6 +371,30 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/Vagas/ocupadas": {
+      "get": {
+        "summary": "Retorna o número de vagas ocupadas, separadas por preferencial e normal",
+        "tags": ["Vaga"],
+        "responses": {
+          "200": {
+            "description": "Número de vagas ocupadas retornado com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total_preferencial": {
+                  "type": "integer",
+                  "description": "Número total de vagas preferenciais ocupadas"
+                },
+                "total_normal": {
+                  "type": "integer",
+                  "description": "Número total de vagas normais ocupadas"
+                }
+              }
+            }
           }
         }
       }
