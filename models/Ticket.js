@@ -9,21 +9,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Reserva, {
-        foreignKey: "ReservaID",
+        foreignKey: "Reservaid",
         as: "reserva",
       });
     }
   }
   Ticket.init(
     {
-      ID: { type: DataTypes.INTEGER, primaryKey: true },
-      ReservaID: {
+      id: { type: DataTypes.INTEGER, primaryKey: true },
+      Reservaid: {
         type: DataTypes.INTEGER,
-        references: { model: sequelize.models.Reserva, key: "ID" },
+        references: { model: sequelize.models.Reserva, key: "id" },
       },
       QRCode: DataTypes.BLOB,
     },
-    { sequelize, modelName: "ticket", tableName: "tickets" }
+    { sequelize, modelName: "ticket", tableName: "tickets", timestamps: false }
   );
   return Ticket;
 };

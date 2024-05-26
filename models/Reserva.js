@@ -2,43 +2,39 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Reserva extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+    
     static associate(models) {
       this.belongsTo(models.Usuario, {
-        foreignKey: "UsuarioID",
+        foreignKey: "usuarioid",
         as: "usuario",
       });
       this.belongsTo(models.Veiculo, {
-        foreignKey: "VeiculoID",
+        foreignKey: "veiculoid",
         as: "veiculo",
       });
-      this.belongsTo(models.Vaga, { foreignKey: "VagaID", as: "vaga" });
+      this.belongsTo(models.Vaga, { foreignKey: "vagaid", as: "vaga" });
     }
   }
   Reserva.init(
     {
-      ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-      UsuarioID: {
+      id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+      usuarioid: {
         type: DataTypes.INTEGER,
-        references: { model: sequelize.models.Usuario, key: "ID" },
+        references: { model: sequelize.models.Usuario, key: "id" },
       },
-      VeiculoID: {
+      veiculoid: {
         type: DataTypes.INTEGER,
-        references: { model: sequelize.models.Veiculo, key: "ID" },
+        references: { model: sequelize.models.Veiculo, key: "id" },
       },
-      VagaID: {
+      vagaid: {
         type: DataTypes.INTEGER,
-        references: { model: sequelize.models.Vaga, key: "ID" },
+        references: { model: sequelize.models.Vaga, key: "id" },
       },
-      HorarioEntrada: DataTypes.TIME,
-      HorarioSaida: DataTypes.TIME,
-      DataReserva: DataTypes.DATE,
+      horarioentrada: DataTypes.TIME,
+      horariosaida: DataTypes.TIME,
+      datareserva: DataTypes.DATE,
     },
-    { sequelize, modelName: "Reserva", tableName: "reservas" }
+    { sequelize, modelName: "Reserva", tableName: "reservas", timestamps: false }
   );
   return Reserva;
 };

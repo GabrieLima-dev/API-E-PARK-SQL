@@ -2,42 +2,79 @@ const express = require("express");
 const router = express.Router();
 const { Reserva } = require('../models');
 
-// Get all reserva
+
 router.get("/", async (req, res) => {
   const reserva = await Reserva.findAll();
   res.json(reserva);
 });
 
-// Get reserva by ID
+
 router.get("/:id", async (req, res) => {
-  const reserva = await Reserva.findByPk(req.params.id);
-  res.json(reserva);
+  try {
+    const reserva = await Reserva.findByPk(req.params.id);
+
+    if (reserva) {
+      res.json(reserva);
+    } else {
+      res.status(404).json({ error: "Reserva não encontrada" });
+    }
+  } catch (error) {
+    console.error('Erro ao buscar reserva:', error);
+    res.status(500).json({ error: "Erro ao buscar reserva" });
+  }
 });
 
-// Create new reserva
 router.post("/", async (req, res) => {
-  const reserva = await Reserva.create(req.body);
-  res.json(reserva);
+  try {
+    
+    const { usuarioid, veiculoid, vagaid, horarioentrada, horariosaida, datareserva } = req.body;
+    
+    const novaReserva = await Reserva.create({
+      usuarioid,
+      veiculoid,
+      vagaid,
+      horarioentrada,
+      horariosaida,
+      datareserva
+    });
+
+    res.status(201).json(novaReserva);
+  } catch (error) {
+    
+    console.error('Erro ao criar reserva:', error);
+    res.status(500).json({ error: 'Erro ao criar reserva' });
+  }
 });
 
-// Update reserva
 router.put("/:id", async (req, res) => {
-  await Reserva.update(req.body, { where: { ID: req.params.id } });
-  res.json({ success: "Reserva updated" });
+  try {
+    const reservaId = req.params.id;
+    const updatedReservaInfo = req.body; 
+
+    const [updatedRows] = await Reserva.update(updatedReservaInfo, { where: { id: reservaId } });
+
+    if (updatedRows === 1) {
+      res.json({ success: "Reserva updated" });
+    } else {
+      res.status(404).json({ error: "Reserva não encontrada" });
+    }
+  } catch (error) {
+    console.error('Erro ao atualizar reserva:', error);
+    res.status(500).json({ error: "Erro ao atualizar reserva" });
+  }
 });
 
-// Delete reserva
 router.delete("/:id", async (req, res) => {
   try {
     const reservaId = req.params.id;
 
-    // Exclua a reserva
+  
     const rowsDeleted = await Reserva.destroy({ where: { id: reservaId } });
 
     if (rowsDeleted) {
-      res.json({ success: "Reserva deleted" });
+      res.json({ success: "Reserva deletada" });
     } else {
-      res.status(404).json({ error: "Reserva not found" });
+      res.status(404).json({ error: "Reserva não encontrada" });
     }
   } catch (error) {
     console.error('Erro ao excluir reserva:', error);

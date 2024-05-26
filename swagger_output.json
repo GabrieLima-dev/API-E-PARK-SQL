@@ -494,7 +494,7 @@
     },
     "/Reserva/": {
       "get": {
-        "description": "",
+        "description": "Busca todas as reservas",
         "tags": ["Reserva"],
         "responses": {
           "200": {
@@ -503,18 +503,64 @@
         }
       },
       "post": {
-        "description": "",
+        "description": "Cria uma nova reserva",
         "tags": ["Reserva"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "usuarioid": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "veiculoid": {
+                  "type": "integer",
+                  "example": 2
+                },
+                "vagaid": {
+                  "type": "integer",
+                  "example": 3
+                },
+                "horarioentrada": {
+                  "type": "string",
+                  "example": 1300,
+                  "format": "time"
+                },
+                "horariosaida": {
+                  "type": "string",
+                  "format": "time",
+                  "example": 1400
+                },
+                "datareserva": {
+                  "type": "string",
+                  "format": "date",
+                  "example": "2024-05-25"
+                }
+              },
+              "required": ["usuarioid", "veiculoid", "vagaid", "horarioentrada", "horariosaida", "datareserva"]
+            }
+          }
+        ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Reserva criada com sucesso"
+          },
+          "400": {
+            "description": "Requisição inválida"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
           }
         }
       }
     },
     "/Reserva/{id}": {
       "get": {
-        "description": "",
+        "description": "Busca a reserva com a ID",
         "tags": ["Reserva"],
         "parameters": [
           {
@@ -526,24 +572,75 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Reserva encontrada"
+          },
+          "404": {
+            "description": "Reserva não encontrada"
+          },
+          "500": {
+            "description": "Erro ao buscar reserva"
           }
         }
       },
       "put": {
-        "description": "",
+        "description": "Atualiza uma reserva pelo ID",
         "tags": ["Reserva"],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Dados atualizados da reserva",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "usuarioid": {
+                  "type": "integer",
+                  "example": "1"
+                },
+                "veiculoid": {
+                  "type": "integer",
+                  "example": "1"
+                },
+                "vagaid": {
+                  "type": "integer",
+                  "example": "1"
+                },
+                "horarioentrada": {
+                  "type": "string",
+                  "format": "time",
+                  "example": "1300"
+                },
+                "horariosaida": {
+                  "type": "string",
+                  "format": "time",
+                  "example": "1400"
+                },
+                "datareserva": {
+                  "type": "string",
+                  "format": "date",
+                  "example": "2024-05-25"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Reserva não encontrada"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
           }
         }
       },
