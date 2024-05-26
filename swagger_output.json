@@ -13,7 +13,7 @@
   "paths": {
     "/Usuario/": {
       "get": {
-        "description": "",
+        "description": "Busca todos os usuário",
         "tags": ["Usuario"],
         "responses": {
           "200": {
@@ -22,7 +22,7 @@
         }
       },
       "post": {
-        "description": "",
+        "description": "Cria um novo Usuario",
         "tags": ["Usuario"],
         "parameters": [
           {
@@ -53,17 +53,17 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Usuário criado com sucesso"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro ao criar Usuario"
           }
         }
       }
     },
     "/Usuario/{id}": {
       "get": {
-        "description": "",
+        "description": "Busca o Usuario com a ID",
         "tags": ["Usuario"],
         "parameters": [
           {
@@ -122,7 +122,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Usuario atualizado"
           },
           "404": {
             "description": "Usuário não encontrado"
@@ -130,7 +130,7 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "Deleta um usuário pelo ID",
         "tags": ["Usuario"],
         "parameters": [
           {
@@ -142,7 +142,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Usuario deletado"
           },
           "500": {
             "description": "Internal Server Error"
@@ -152,7 +152,7 @@
     },
     "/Veiculo/": {
       "get": {
-        "description": "",
+        "description": "Busca todos os veículos",
         "tags": ["Veiculo"],
         "responses": {
           "200": {
@@ -161,7 +161,7 @@
         }
       },
       "post": {
-        "description": "",
+        "description": "Cria um novo Veiculo",
         "tags": ["Veiculo"],
         "parameters": [
           {
@@ -172,7 +172,7 @@
               "properties": {
                 "usuarioid": {
                   "type": "string",
-                  "example": ""
+                  "example": "1"
                 },
                 "marca": {
                   "type": "string",
@@ -184,11 +184,11 @@
                 },
                 "ano": {
                   "type": "integer",
-                  "example": 0
+                  "example": 2024
                 },
                 "placa": {
                   "type": "string",
-                  "example": ""
+                  "example": "abc1234"
                 }
               }
             }
@@ -209,7 +209,7 @@
     },
     "/Veiculo/{id}": {
       "get": {
-        "description": "",
+        "description": "Busca o Veiculo com a ID",
         "tags": ["Veiculo"],
         "parameters": [
           {
@@ -261,11 +261,11 @@
                 },
                 "ano": {
                   "type": "integer",
-                  "example": "any"
+                  "example": 2024
                 },
                 "placa": {
                   "type": "string",
-                  "example": "any"
+                  "example": "abc1234"
                 }
               },
               "required": ["usuarioid", "marca", "modelo", "ano", "placa"]
@@ -285,7 +285,7 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "Deleta um Veiculo pelo ID",
         "tags": ["Veiculo"],
         "parameters": [
           {
@@ -297,14 +297,20 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Veiculo excluida com sucesso."
+          },
+          "404": {
+            "description": "Veiculo não encontrada"
+          },
+          "500": {
+            "description": "Erro ao excluir Veiculo"
           }
         }
       }
     },
     "/Vaga/": {
       "get": {
-        "description": "Todas as vagas",
+        "description": "Busca todas as vagas",
         "tags": ["Vaga"],
         "responses": {
           "200": {
@@ -434,7 +440,7 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "Deleta um vaga pelo ID",
         "tags": ["Vaga"],
         "parameters": [
           {
@@ -603,15 +609,15 @@
               "properties": {
                 "usuarioid": {
                   "type": "integer",
-                  "example": "1"
+                  "example": 1
                 },
                 "veiculoid": {
                   "type": "integer",
-                  "example": "1"
+                  "example": 1
                 },
                 "vagaid": {
                   "type": "integer",
-                  "example": "1"
+                  "example": 1
                 },
                 "horarioentrada": {
                   "type": "string",
@@ -645,7 +651,7 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "Deleta um Reserva pelo ID",
         "tags": ["Reserva"],
         "parameters": [
           {
@@ -657,14 +663,20 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Reserva excluida com sucesso."
+          },
+          "404": {
+            "description": "Reserva não encontrada"
+          },
+          "500": {
+            "description": "Erro ao excluir Reserva"
           }
         }
       }
     },
     "/Ticket/": {
       "get": {
-        "description": "Todos os tickets",
+        "description": "Busca todos os tickets",
         "tags": ["Ticket"],
         "responses": {
           "200": {
@@ -698,7 +710,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Ticket criado",
             "schema": {
               "type": "object",
               "properties": {
@@ -709,7 +721,8 @@
                   "type": "integer"
                 },
                 "qrCode": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "any"
                 }
               }
             }
@@ -722,7 +735,7 @@
     },
     "/Ticket/{id}": {
       "get": {
-        "description": "",
+        "description": "Busca a Ticket com a ID",
         "tags": ["Ticket"],
         "parameters": [
           {
@@ -745,7 +758,46 @@
         }
       },
       "put": {
-        "description": "",
+        "description": "Atualiza um Ticket pelo ID",
+        "tags": ["Ticket"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "reservaid": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "qrCode": {
+                  "type": "BLOB",
+                  "example": "any"
+                }
+              },
+              "required": ["reservaid", "qrCode"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticket atualizado"
+          },
+          "404": {
+            "description": "Ticket não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "description": "Deleta um Ticket pelo ID",
         "tags": ["Ticket"],
         "parameters": [
           {
@@ -757,30 +809,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "description": "Exclui um Ticket pelo ID",
-        "tags": ["Ticket"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "INTEGER"
-          }
-        ],
-        "responses": {
-          "200": {
             "description": "Ticket deletado"
           },
           "500": {
             "description": "Erro ao excluir Ticket"
           }
         }
-      }
+      } 
     }
   }
 }
