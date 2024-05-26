@@ -50,7 +50,7 @@ router.put("/:id", async (req, res) => {
     if (updatedRows === 1) {
       res.json({ success: "Usuario updated" });
     } else {
-      res.status(404).json({ error: "Usuario not found" });
+      res.status(404).json({ error: "Usuario não encontrado" });
     }
   } catch (error) {
     console.error('Erro ao atualizar usuário:', error);

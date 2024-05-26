@@ -664,7 +664,7 @@
     },
     "/Ticket/": {
       "get": {
-        "description": "",
+        "description": "Todos os tickets",
         "tags": ["Ticket"],
         "responses": {
           "200": {
@@ -673,11 +673,49 @@
         }
       },
       "post": {
-        "description": "",
+        "description": "Cria um novo Ticket",
         "tags": ["Ticket"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "reservaid": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "qrCode": {
+                  "type": "BLOB",
+                  "example": "any"
+                }
+              },
+              "required": ["reservaid", "qrCode"]
+            }
+          }
+        ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "reservaid": {
+                  "type": "integer"
+                },
+                "qrCode": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -696,7 +734,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Ticket encontrado"
+          },
+          "404": {
+            "description": "Ticket não encontrado"
+          },
+          "500": {
+            "description": "Erro ao buscar ticket"
           }
         }
       },
@@ -718,19 +762,22 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "Exclui um Ticket pelo ID",
         "tags": ["Ticket"],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "INTEGER"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Ticket deletado"
+          },
+          "500": {
+            "description": "Erro ao excluir Ticket"
           }
         }
       }

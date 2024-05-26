@@ -2,34 +2,74 @@ const express = require("express");
 const router = express.Router();
 const { Ticket } = require('../models');
 
-// Get all ticket
+
 router.get("/", async (req, res) => {
   const ticket = await Ticket.findAll();
   res.json(ticket);
 });
 
-// Get ticket by ID
+
 router.get("/:id", async (req, res) => {
-  const ticket = await Ticket.findByPk(req.params.id);
-  res.json(ticket);
+  try {
+    const ticket = await Ticket.findByPk(req.params.id);
+
+    if (ticket) {
+      res.json(ticket);
+    } else {
+      res.status(404).json({ error: "Ticket não encontrado" });
+    }
+  } catch (error) {
+    console.error('Erro ao buscar ticket:', error);
+    res.status(500).json({ error: "Erro ao buscar ticket" });
+  }
 });
 
-// Create new ticket
+
 router.post("/", async (req, res) => {
-  const ticket = await Ticket.create(req.body);
-  res.json(ticket);
+  try {
+    const { reservaid, qrCode } = req.body;
+
+    const novoTicket = await Ticket.create({
+      reservaid,
+      qrCode
+    });
+
+    res.status(201).json(novoTicket);
+  } catch (error) {
+    console.error('Erro ao criar ticket:', error);
+    res.status(500).json({ error: 'Erro ao criar ticket' });
+  }
 });
 
-// Update ticket
+
 router.put("/:id", async (req, res) => {
-  await Ticket.update(req.body, { where: { ID: req.params.id } });
-  res.json({ success: "ticket updated" });
+  try {
+    const ticketId = req.params.id;
+    const updatedTicketInfo = req.body; 
+
+    const [updatedRows] = await Ticket.update(updatedTicketInfo, { where: { id: ticketId } });
+
+    if (updatedRows === 1) {
+      res.json({ success: "Ticket updated" });
+    } else {
+      res.status(404).json({ error: "Ticket não encontrado" });
+    }
+  } catch (error) {
+    console.error('Erro ao atualizar Ticket:', error);
+    res.status(500).json({ error: "Erro ao atualizar Ticket" });
+  }
 });
 
-// Delete ticket
+
 router.delete("/:id", async (req, res) => {
-  await Ticket.destroy({ where: { ID: req.params.id } });
-  res.json({ success: "ticket deleted" });
+  try {
+    await Ticket.destroy({ where: { id: req.params.id } });
+
+    res.json({ success: "Ticket deleted" });
+  } catch (error) {
+    console.error('Erro ao excluir ticket:', error);
+    res.status(500).json({ error: "Erro ao excluir Ticket" });
+  }
 });
 
 module.exports = (app) => app.use("/Ticket", router);
