@@ -10,14 +10,13 @@ const port = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.json());
 
 require("./controllers/Usuario")(app);
 require("./controllers/Veiculo")(app);
 require("./controllers/Vaga")(app);
 require("./controllers/Reserva")(app);
 require("./controllers/Ticket")(app);
-
-app.use(express.json());
 
 // Middleware para tratamento de erros
 app.use((err, req, res, next) => {

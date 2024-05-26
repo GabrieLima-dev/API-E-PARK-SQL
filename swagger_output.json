@@ -470,30 +470,35 @@
         "responses": {
           "200": {
             "description": "Número de vagas ocupadas retornado com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "total": {
-                      "type": "integer",
-                      "description": "Número total de vagas ocupadas"
-                    },
-                    "preferencial": {
-                      "type": "integer",
-                      "description": "Número de vagas ocupadas preferenciais"
-                    },
-                    "normal": {
-                      "type": "integer",
-                      "description": "Número de vagas ocupadas normais"
-                    }
-                  }
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "description": "Número total de vagas ocupadas"
+                },
+                "preferencial": {
+                  "type": "integer",
+                  "description": "Número de vagas ocupadas preferenciais"
+                },
+                "normal": {
+                  "type": "integer",
+                  "description": "Número de vagas ocupadas normais"
                 }
               }
             }
           },
           "500": {
-            "description": "Erro ao contar vagas ocupadas"
+            "description": "Erro ao contar vagas ocupadas",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Mensagem de erro"
+                }
+              }
+            }
           }
         }
       }
