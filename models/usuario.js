@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Usuario",
       tableName: "usuarios",
-      timestamps: false, // Isso impede que o Sequelize adicione automaticamente as colunas createdAt e updatedAt
+      timestamps: false,
     }
   );
   return Usuario;

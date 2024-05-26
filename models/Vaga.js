@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Vaga.init(
     {
-      ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-      Tipo: DataTypes.STRING,
-      Ocupada: { type: DataTypes.BOOLEAN, defaultValue: false },
+      id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+      tipo: DataTypes.STRING,
+      ocupada: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     { sequelize, modelName: "Vaga", tableName: "vagas", timestamps: false }
   );

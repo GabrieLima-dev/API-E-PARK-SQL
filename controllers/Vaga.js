@@ -17,13 +17,13 @@ router.get("/", async (req, res) => {
 router.get("/vagas/ocupadas", async (req, res) => {
   try {
     // Contar o número total de vagas ocupadas
-    const total = await Vaga.count({ where: { Ocupada: true } });
+    const total = await Vaga.count({ where: { ocupada: true } });
 
     // Contar o número de vagas ocupadas preferenciais
-    const preferencial = await Vaga.count({ where: { Ocupada: true, Tipo: 'preferencial' } });
+    const preferencial = await Vaga.count({ where: { ocupada: true, Tipo: 'preferencial' } });
 
     // Contar o número de vagas ocupadas normais
-    const normal = await Vaga.count({ where: { Ocupada: true, Tipo: 'normal' } });
+    const normal = await Vaga.count({ where: { ocupada: true, Tipo: 'normal' } });
 
     // Retornar a resposta
     res.json({ total, preferencial, normal });
@@ -50,30 +50,38 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { tipo, ocupada } = req.body;
+
+    // Validação básica
+    if (!tipo) {
+      return res.status(400).json({ error: "O campo 'tipo' é obrigatório" });
+    }
+
+    // Criação da nova vaga
     const novaVaga = await Vaga.create({ tipo, ocupada });
+
     res.status(201).json(novaVaga);
   } catch (error) {
     console.error('Erro ao criar vaga:', error);
-    res.status(500).json({ error: 'Erro ao criar vaga' });
+    res.status(500).json({ error: "Erro ao criar vaga" });
   }
 });
 
 router.put("/:id", async (req, res) => {
   try {
-    const { tipo, ocupada } = req.body;
-    const [updated] = await Vaga.update(
-      { tipo, ocupada },
-      { where: { id: req.params.id } }
-    );
-    if (updated) {
-      const vagaAtualizada = await Vaga.findByPk(req.params.id);
-      res.json(vagaAtualizada);
+    const vagaId = req.params.id;
+    const updatedVagaInfo = req.body; 
+
+    // Atualiza a vaga no banco de dados
+    const [updatedRows] = await Vaga.update(updatedVagaInfo, { where: { id: vagaId } });
+
+    if (updatedRows === 1) {
+      res.json({ success: "Vaga updated" });
     } else {
-      res.status(404).json({ error: 'Vaga não encontrada' });
+      res.status(404).json({ error: "Vaga não encontrada" });
     }
   } catch (error) {
     console.error('Erro ao atualizar vaga:', error);
-    res.status(500).json({ error: 'Erro ao atualizar vaga' });
+    res.status(500).json({ error: "Erro ao atualizar vaga" });
   }
 });
 

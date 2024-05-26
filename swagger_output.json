@@ -304,27 +304,70 @@
     },
     "/Vaga/": {
       "get": {
-        "description": "",
+        "description": "Todas as vagas",
         "tags": ["Vaga"],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Todas as vagas"
+          },
+          "500": {
+            "description": "Erro ao buscar vagas"
           }
         }
       },
       "post": {
-        "description": "",
+        "description": "Cria uma nova vaga",
         "tags": ["Vaga"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tipo": {
+                  "type": "string",
+                  "example": "normal"
+                },
+                "ocupada": {
+                  "type": "boolean",
+                  "example": false
+                }
+              },
+              "required": ["tipo"]
+            }
+          }
+        ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Vaga criada com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tipo": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "ocupada": {
+                  "type": "boolean",
+                  "example": "any"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "500": {
+            "description": "Erro ao criar vaga"
           }
         }
       }
     },
     "/Vaga/{id}": {
       "get": {
-        "description": "",
+        "description": "Busca vaga por id",
         "tags": ["Vaga"],
         "parameters": [
           {
@@ -336,24 +379,57 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Vaga encontrada"
+          },
+          "404": {
+            "description": "Vaga não encontrada"
+          },
+          "500": {
+            "description": "Erro ao encontrar vaga"
           }
         }
       },
       "put": {
-        "description": "",
+        "description": "Atualiza uma vaga pelo ID",
         "tags": ["Vaga"],
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID da vaga a ser atualizada",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações da vaga a serem atualizadas",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tipo": {
+                  "type": "string",
+                  "example": "normal"
+                },
+                "ocupada": {
+                  "type": "boolean",
+                  "example": false
+                }
+              },
+              "required": ["tipo", "ocupada"]
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Vaga atualizada com sucesso"
+          },
+          "404": {
+            "description": "Vaga não encontrada"
+          },
+          "500": {
+            "description": "Erro ao atualizar vaga"
           }
         }
       },
@@ -370,31 +446,48 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Vaga excluida com sucesso."
+          },
+          "404": {
+            "description": "Vaga não encontrada"
+          },
+          "500": {
+            "description": "Erro ao excluir vaga"
           }
         }
       }
     },
     "/Vagas/ocupadas": {
       "get": {
-        "summary": "Retorna o número de vagas ocupadas, separadas por preferencial e normal",
+        "description": "Retorna o número de vagas ocupadas, separadas por tipo.",
         "tags": ["Vaga"],
         "responses": {
           "200": {
             "description": "Número de vagas ocupadas retornado com sucesso",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "total_preferencial": {
-                  "type": "integer",
-                  "description": "Número total de vagas preferenciais ocupadas"
-                },
-                "total_normal": {
-                  "type": "integer",
-                  "description": "Número total de vagas normais ocupadas"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "description": "Número total de vagas ocupadas"
+                    },
+                    "preferencial": {
+                      "type": "integer",
+                      "description": "Número de vagas ocupadas preferenciais"
+                    },
+                    "normal": {
+                      "type": "integer",
+                      "description": "Número de vagas ocupadas normais"
+                    }
+                  }
                 }
               }
             }
+          },
+          "500": {
+            "description": "Erro ao contar vagas ocupadas"
           }
         }
       }
